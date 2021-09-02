@@ -1,14 +1,12 @@
 import React from 'react'
 // import {Link} from 'react-router-dom'
 
-import './welcome.css'
 
 function Welcome() {
     return (
        
             <div>
 
-           
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
              <div className="container-fluid">
                  <a className="navbar-brand" href="/">Available</a>
