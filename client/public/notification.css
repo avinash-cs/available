@@ -7,6 +7,7 @@
 }
 
 .successMsg{
+    border-radius: 8px;
     background: rgb(9, 158, 54);
     color: #fff9;
     text-align: center;

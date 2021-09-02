@@ -56,10 +56,11 @@ function Register() {
             <Header />
        
         <div className="login_page">
-           
+          
+            <div className="login_cont">
+                 
             {err && showErrMsg(err)}
             {success && showSuccessMsg(success)}
-            <div className="login_cont">
             <h2>Register</h2>
             <form className= "login_form" onSubmit={handleSubmit}>
                 <div>

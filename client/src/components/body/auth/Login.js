@@ -65,10 +65,11 @@ function Login() {
        <div>
         <Header />
         <div className="login_page">
-            
+          
+            <br />
+            <div className="login_cont">
             {err && showErrMsg(err)}
             {success && showSuccessMsg(success)}
-            <div className="login_cont">
             <h2>Login</h2>
             <form className= "login_form" onSubmit={handleSubmit}>
                 <div>
