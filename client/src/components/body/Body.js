@@ -28,13 +28,13 @@ function Body() {
                 <Route path="/dashboard" component={Dashboard} exact />
                 <Route path="/login" component={isLogged ? NotFound : Login} exact />
                 <Route path="/register" component={isLogged ? NotFound : Register} exact />
-                <Route path="/cart" component={Cart}/>
-                <Route path="/orderdetails"  component={Orderdetails} />
-                <Route path="/orders"  component={Orders} />
-                <Route path="/professionalprofile"  component={ProfessionalProfile}/>
+                <Route path="/cart" component={isLogged ?Cart: NotFound }/>
+                <Route path="/orderdetails"  component={isLogged ? Orderdetails: NotFound } />
+                <Route path="/orders"  component={isLogged ? Orders: NotFound } />
+                <Route path="/professionalprofile"  component={isLogged ?ProfessionalProfile : NotFound }/>
                 <Route path="/proregister"  component={ProRegister}/>
                 <Route path="/services"  component={Detailedservice}/>
-                <Route path="/setupprofile" component ={Setupprofile}/>
+                <Route path="/setupprofile" component ={isLogged ? Setupprofile : NotFound }/>
 
                 <Route path="/forgotpassword" component={isLogged ? NotFound : ForgotPass} exact />
                 <Route path="/user/reset/:token" component={isLogged ? NotFound : ResetPass} exact />
