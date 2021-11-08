@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -28,30 +27,34 @@ const userSchema = new mongoose.Schema({
     gender: {
         type: 'String',
         required: [false, "Please enter your gender!"],
-       
+        default: 'NULL'
     },
     mobile: {
         type: ['Number'],
         required: [false, "Please enter your mobile number!"],
+        default: [0]
     },
     state: {
         type: 'String',
        
         required: [false, "Please select your state!"],
-        
+        default: 'NULL'
     },
     city: {
         type: 'String',
         required: [false, "Please select your city!"],
+        default: 'NULL'
     },
    
     district: {
         type: 'String',
         required: [false, "Please select your district!"],
+        default: 'NULL'
     },
     pincode: {
         type: Number,
         required: [false, "Please enter your pincode!"],
+        default: 0
     },
 
 
