@@ -6,6 +6,7 @@ import {isLength, isMatch} from '../../utils/validation/Validation'
 import {showSuccessMsg, showErrMsg} from '../../utils/notification/Notification'
 import {fetchAllUsers, dispatchGetAllUsers} from '../../../redux/actions/usersAction'
 import Header from '../../header/Header'
+import './profile.css'
 const initialState = {
     name: '',
     password: '',

@@ -6,6 +6,7 @@ import {dispatchLogin} from '../../../redux/actions/authAction'
 import {useDispatch} from 'react-redux'
 import { GoogleLogin } from 'react-google-login';
 import Header from '../../header/Header'
+import './auth.css'
 
 const initialState = {
     email: '',

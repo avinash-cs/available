@@ -24,7 +24,38 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
-    }
+    },
+    gender: {
+        type: 'String',
+        required: [false, "Please enter your gender!"],
+       
+    },
+    mobile: {
+        type: ['Number'],
+        required: [false, "Please enter your mobile number!"],
+    },
+    state: {
+        type: 'String',
+       
+        required: [false, "Please select your state!"],
+        
+    },
+    city: {
+        type: 'String',
+        required: [false, "Please select your city!"],
+    },
+   
+    district: {
+        type: 'String',
+        required: [false, "Please select your district!"],
+    },
+    pincode: {
+        type: Number,
+        required: [false, "Please enter your pincode!"],
+    },
+
+
+
 }, {
     timestamps: true
 })
