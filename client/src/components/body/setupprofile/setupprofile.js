@@ -107,10 +107,7 @@ function Setupprofile() {
         if (!gender || !state || !district || !city || !pincode) {
             window.alert('ERROR\nPlease provide all the fields');
         } else {
-            console.log({
-                gender, state, district, city, pincode
-            });
-            axios.post('http://localhost:3000/user/setUpProfile', {
+            axios.post('http://localhost:3000/user/setUserProfile', {
                 gender, state, district, city, pincode
             }).then(res => {
                 console.log(res);

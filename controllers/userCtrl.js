@@ -171,6 +171,19 @@ const userCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
+    updateUserProfile: async (req, res) => {
+        try {
+            console.log(req);
+            console.log(req.user);
+            const {gender, state, district, city, pincode} = req.body;
+            await Users.findOneAndUpdate({_id: req.user.id}, {
+                gender, state, district, city, pincode
+            });
+            res.status(204).json({msg: 'User profile set up successfully!'});
+        } catch (err) {
+            return res.status(500).json({msg: err.message});
+        }
+    },
     updateUsersRole: async (req, res) => {
         try {
             const {role} = req.body
