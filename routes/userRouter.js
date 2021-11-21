@@ -27,7 +27,7 @@ router.patch('/update_role/:id', auth, authAdmin, userCtrl.updateUsersRole)
 
 router.delete('/delete/:id', auth, authAdmin, userCtrl.deleteUser)
 
-router.post('/setUserProfile', userCtrl.updateUserProfile);
+router.post('/setUserProfile',auth , userCtrl.updateUserProfile);
 // Social Login
 router.post('/google_login', userCtrl.googleLogin)
 

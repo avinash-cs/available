@@ -172,17 +172,30 @@ const userCtrl = {
         }
     },
     updateUserProfile: async (req, res) => {
-        try {
-            console.log(req);
-            console.log(req.user);
-            const {gender, state, district, city, pincode} = req.body;
-            await Users.findOneAndUpdate({_id: req.user.id}, {
-                gender, state, district, city, pincode
-            });
-            res.status(204).json({msg: 'User profile set up successfully!'});
-        } catch (err) {
-            return res.status(500).json({msg: err.message});
-        }
+       const user = await User.findById(req.user._id);
+       if(user) {
+           user.pincode = req.body.pincode || user.pincode;
+           user.gender = req.body.gender || user.gender;
+           user.state = req.body.state || user.state;
+           user.district = req.body.district || user.district;
+           user.city = req.body.city || user.city;
+
+           const updateuserpro = await user.save();
+           
+           re.json({
+               _id:updateuserpro._id,
+               gender:updateuserpro.gender,
+               state:updateuserpro.state,
+               district:updateuserpro.district,
+               city:updateuserpro.city,
+               pincode:updateuserpro.pincode,
+               token:createAccessToken({id: updateuserpro._id})
+           });
+           
+       }else{
+           res.status(404)
+           throw new Error("User not found");
+       }
     },
     updateUsersRole: async (req, res) => {
         try {

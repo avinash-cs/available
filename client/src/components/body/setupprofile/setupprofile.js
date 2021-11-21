@@ -3,120 +3,56 @@ import Header from '../../header/Header'
 import './setupprofile.css';
 import {towns, states} from './data';
 import axios from 'axios';
+import {showSuccessMsg, showErrMsg} from '../../utils/notification/Notification'
 
+import {useSelector, useDispatch} from 'react-redux'
+
+const initialState = {
+   
+    pincode:'',
+    err: '',
+    success: ''
+}
 function Setupprofile() {
-    const [gender, setGender] = useState("");
-    const [state, setState] = useState("");
-    const [district, setDistrict] = useState("");
-    const [city, setCity] = useState("");
-    const [pincode, setPincode] = useState("");
-
+    const auth = useSelector(state => state.auth)
+    const token = useSelector(state => state.token)
+    const user = auth;
+    const [loading, setLoading] = useState(false)
+    
+    const [data, setData] = useState(initialState)
+    const {pincode, err, success} = data
+    const dispatch = useDispatch()
+    const handleChange = e => {
+        const {name, value} = e.target
+        setData({...data, [name]:value, err:'', success: ''})
+    }
     useEffect(() => {
-        const stateSelect = document.getElementById('stateSel');
-        const indianStates = states.states;
-        indianStates.forEach(state => {
-            const option = document.createElement('option');
-            const name = state.state;
-            option.text = name;
-            stateSelect.appendChild(option);
-        })
-    }, [towns, states]);
-
-    // state change handler
-    const stateChangeHandler = (e) => {
-        console.log('State changed to', e.target.value);
-        setState(e.target.value);
-        const indianStates = states.states;
-        const districtSel = document.getElementById('districtSel');
-        indianStates.forEach(state => {
-            const name = state.state;
-            if (name === 'Haryana') {
-                const districts = state.districts;
-                districts.forEach(district => {
-                    const option = document.createElement('option');
-                    option.text = district;
-                    districtSel.appendChild(option);
-                })
-            }
-        });
-    }
-
-    // remove options helper
-    const removeOptions = (selectElement) => {
-        let i, L = selectElement.options.length - 1;
-        for(i = L; i >= 0; i--) {
-           selectElement.remove(i);
+        if(user){
+           
         }
-    }
+    },[token,user])
 
-    // district change handler
-    const districtChangeHandler = (e) => {
-        console.log('District changed to', e.target.value);
-        const districtChosen = e.target.value;
-        setDistrict(districtChosen);
 
-        const townSelect = document.getElementById('townSel');
 
-        // removing the previous options
-        removeOptions(townSelect);
 
-        const defaultOption = document.createElement('option');
-        defaultOption.text = 'Select your city/village';
-        townSelect.appendChild(defaultOption);
-
-        if (districtChosen in towns) {
-            const townsInDistrict = towns[districtChosen];
-
-            townsInDistrict.forEach(town => {
-                const option = document.createElement('option');
-                option.text = town;
-                townSelect.appendChild(option);
+    const updateInfor = () => {
+        try {
+            axios.patch('/user/setupprofile', {
+                pincode:pincode?pincode:user.pincode,
+            },{
+                headers: {Authorization: token}
             })
-        } else {
-            const option = document.createElement('option');
-            option.text = 'DEFAULT TOWN';
-            townSelect.appendChild(option);
+
+            setData({...data, err: '' , success: "Updated Success!"})
+        } catch (err) {
+            setData({...data, err: err.response.data.msg , success: ''})
         }
     }
 
-    // city change handler
-    const cityChangeHandler = (e) => {
-        console.log('City name changed to', e.target.value);
-        setCity(e.target.value);
-    } 
-
-    // pincode handler
-    const pincodeHandler = (e) => {
-        const pinCode = e.target.value;
-        const regex = new RegExp('^[1-9][0-9]{5}$');
-        if (regex.test(pinCode)) {
-            console.log(pinCode);
-            setPincode(pinCode.toString());
-        }
-    } 
-
-    // handler for gender
-    const genderHandler = (e) => {
-        const genderSelected = e.target.value;
-        setGender(genderSelected);
+    const handleUpdate = () => {
+        if(pincode) updateInfor()
+        
     }
-
-    // handle submit
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!gender || !state || !district || !city || !pincode) {
-            window.alert('ERROR\nPlease provide all the fields');
-        } else {
-            axios.post('http://localhost:3000/user/setUserProfile', {
-                gender, state, district, city, pincode
-            }).then(res => {
-                console.log(res);
-            }).catch(err => {
-                console.log(err);
-            }) 
-        }
-    }
-
     return (
         <div>
         <Header />
@@ -126,38 +62,45 @@ function Setupprofile() {
             <h3>Service Fare</h3>
         </div>
             <div className="setup">
+            <div>
+            {err && showErrMsg(err)}
+            {success && showSuccessMsg(success)}
+            {loading && <h3>Loading.....</h3>}
+             </div>
                 <h2 className="setup-head2">Complete your Profile</h2>
                 <form autocomplete="off">
-                    <label id="gender">Choose your Gender :  </label>
+                    {/* <label id="gender">Choose your Gender :  </label>
                     <select id="gender" onChange={genderHandler}>
-                        <option>select</option>
+                        <option >select</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                         <option value="other">Other</option>
-
-                        </select>
+  
+                    </select>
                         <br />
                         <br />
                         Select State: <select name="state" id="stateSel" size="1" onChange={stateChangeHandler}>
-                            <option value="" selected="selected">Select State</option>
+                                <option value="" selected="selected" >Select State</option>
                             </select>
                             <br />
                             <br />
                             Select District: <select name="district" id="districtSel" size="1" onChange={districtChangeHandler}>
-                            <option value="" selected="selected">Select your district</option>
+                          
+                              <option value="" selected="selected" >Select your district</option>
+                          
                             </select>
                             <br />
                             <br />
                             Select Village/City Name: <select name="city" id="townSel" size="1" onChange={cityChangeHandler}>
-                            <option value="" selected="selected">Select your city/village</option>
+                            <option value="" selected="selected" >Select your city/village</option>
                             </select><br />
-                            <br />
+                            <br /> */}
 
-                    Pincode: <input type="number" name="reg-pincode" id="reg-pincode" required placeholder="Pincode" onChange={pincodeHandler}/>
+                    Pincode: <input type="number" name="reg-pincode" id="reg-pincode" required placeholder="Pincode" onChange={updateInfor}  defaultValue={user.pincode}/>
                     <div className="register-row">
                         
                     </div>
-                    <button type="submit" className="setup-btn" onClick={handleSubmit}>Submit</button>
+                    <button type="submit" className="setup-btn" onClick={handleUpdate}>Submit</button>
                 </form>
             </div>
         </div>
